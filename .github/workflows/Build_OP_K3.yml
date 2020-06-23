@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_x86_64
+name: Build_K3
 
 on: 
   release:
@@ -64,16 +64,10 @@ jobs:
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        sed -i '5s/#//' feeds.conf.default
-   
-   
-    - name: 自定义插件
-      run: |
-        cd package
-        mkdir openwrt-packages
-        cd openwrt-packages
-        git clone https://github.com/ksatera/luci-app-passwall.git
-   
+        sed -i '5s/#//' feeds.conf.default   
+        cat >> feeds.conf.default <<EOF
+        src-git laohu https://github.com/huchanghui123/lienol-openwrt-packages-backup
+        EOF
    
     - name: Update & Install feeds
       working-directory: ./openwrt
@@ -88,7 +82,7 @@ jobs:
     #    git clone https://github.com/Lienol/openwrt-package package/lienol
     #    git clone "your_github_link" package/"your_folder_name"      
 
-    - name: Configuration Customization - Build_x86_64
+    - name: Configuration Customization - Build_K3
       env:
         CONFIG_FILE: 'K3.config'
       run: |
